@@ -1,8 +1,8 @@
 "use client";
 import { useOrganizationList } from "@clerk/nextjs";
-import { Item } from "./item";
+import { OrganizationHint } from "./organization-hint";
 
-export const Lists = () => {
+export const OrganizationsMap = () => {
   const { userMemberships } = useOrganizationList({
     userMemberships: {
       infinite: true,
@@ -14,12 +14,11 @@ export const Lists = () => {
   return (
     <ul className="space-y-4 ">
       {userMemberships.data?.map((membership) => (
-
-        <Item 
-        key={membership.organization.id}
-        id={membership.organization.id}
-        name={membership.organization.name}
-        imageUrl={membership.organization.imageUrl}
+        <OrganizationHint
+          key={membership.organization.id}
+          id={membership.organization.id}
+          name={membership.organization.name}
+          imageUrl={membership.organization.imageUrl}
         />
       ))}
       ;
