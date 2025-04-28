@@ -1,21 +1,14 @@
-import Image   from "next/image";
-export const EmptySearch =() =>{
-    return(
-        <div className="h-full flex flex-col items-center justify-center">
-            <Image
-            src="/file.svg"
-            height={140}
-            width={140}
-            alt="Empty"/>
+import Image from "next/image";
+export const EmptySearch = () => {
+  return (
+    <div className="h-full flex flex-col items-center justify-center">
+      <Image src="/file.svg" height={140} width={140} alt="Empty" />
 
+      <h2 className="text-2xl font-semibold mt-6">no results found</h2>
 
-            <h2 className="text-2xl font-semibold mt-6">
-                no results found
-            </h2>
-
-            <p className="text-muted-foreground text-sm mt-2">
-                try searching for something else 
-            </p>
-        </div>
-    );
+      <p className="text-muted-foreground text-sm mt-2">
+        try searching for something else
+      </p>
+    </div>
+  );
 };

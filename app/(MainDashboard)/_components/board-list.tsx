@@ -17,7 +17,7 @@ interface BoardListProps {
 }
 
 export const BoardList = ({ orgId, query }: BoardListProps) => {
-  const data = useQuery(api.boards.get, { orgId });
+  const data = useQuery(api.boards.get, { orgId , ...query,});
 
   if (data === undefined) {
     return (
@@ -41,15 +41,15 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
   }
 
   if (!data.length && query.search) {
-    return <EmptySearch />;
+    return (<EmptySearch />);
   }
 
   if (!data.length && query.favorite) {
-    return <EmptyFavorites />;
+    return( <EmptyFavorites />);
   }
 
   if (!data.length) {
-    return <EmptyBoard />;
+    return (<EmptyBoard />);
   }
 
   return (
@@ -60,7 +60,7 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 mt-8 pb-10">
         <NewBoardButton orgId={orgId} />
-        {data.map((board) => (
+        {data.map((board:any) => (
           <BoardCard
             key={board._id}
             id={board._id}
@@ -70,7 +70,7 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
             createdAt={board._creationTime}
             imageUrl={board.imageUrl}
             orgId={board.orgId}
-            isFavorite={false}
+            isFavorite={board.isFavorite}
           />
         ))}
       </div>

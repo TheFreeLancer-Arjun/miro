@@ -1,37 +1,31 @@
-"use client";
+'use client'
 
-import qs from "query-string";
-import { Search } from "lucide-react";
-import { useDebounce } from "@/hook/use-debounce-hook";
-import { useRouter, useSearchParams } from "next/navigation"; // Import useSearchParams here
-import { ChangeEvent, useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
+import { useEffect, useState, ChangeEvent } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import qs from 'query-string'
+import { useDebounce } from '@/hook/use-debounce-hook'
+import { Search } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
 export const SearchInput = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams(); // Get the search parameters using useSearchParams hook
-  const [value, setValue] = useState(searchParams.get("search") || ""); // Initialize state with the search parameter
+  const router = useRouter()
+  const searchParams = useSearchParams()  // कोई use() नहीं चाहिए यहाँ
 
-  const debouncedValue = useDebounce(value, 500);
+  const [value, setValue] = useState(() => searchParams.get('search') ?? '')
+
+  const debouncedValue = useDebounce(value, 500)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
+    setValue(e.target.value)
+  }
 
   useEffect(() => {
-    // Update the query parameter only when the debounced value changes
     const url = qs.stringifyUrl(
-      {
-        url: "/",
-        query: {
-          search: debouncedValue,
-        },
-      },
+      { url: '/', query: { search: debouncedValue } },
       { skipEmptyString: true, skipNull: true }
-    );
-
-    router.push(url);
-  }, [debouncedValue, router]);
+    )
+    router.push(url)
+  }, [debouncedValue, router])
 
   return (
     <div className="w-full relative">
@@ -43,5 +37,5 @@ export const SearchInput = () => {
         value={value}
       />
     </div>
-  );
-};
+  )
+}

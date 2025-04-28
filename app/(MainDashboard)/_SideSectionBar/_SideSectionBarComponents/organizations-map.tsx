@@ -21,7 +21,7 @@ export const OrganizationsMap = () => {
           imageUrl={membership.organization.imageUrl}
         />
       ))}
-      ;
+      
     </ul>
   );
 };

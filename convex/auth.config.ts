@@ -1,7 +1,7 @@
 export default {
     providers: [
       {
-        domain: "https://dynamic-duck-64.clerk.accounts.dev",
+        domain: "https://active-marmoset-95.clerk.accounts.dev",
         applicationID: "convex",
       },
     ]
