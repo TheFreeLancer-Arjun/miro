@@ -1,4 +1,11 @@
 import Image from "next/image";
+
+/**
+ * EmptyFavorites component displays a message and an image when there are no favorite boards.
+ * It informs the user to try favoriting a board.
+ *
+ * @returns {JSX.Element} The rendered component for displaying an empty state for favorite boards
+ */
 export const EmptyFavorites = () => {
   return (
     <div className="h-full flex flex-col items-center justify-center">

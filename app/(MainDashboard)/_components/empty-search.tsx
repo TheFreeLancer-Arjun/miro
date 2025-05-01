@@ -1,4 +1,11 @@
 import Image from "next/image";
+
+/**
+ * EmptySearch component displays a message and an image when no search results are found.
+ * It prompts the user to try searching for something else.
+ *
+ * @returns {JSX.Element} The rendered component for displaying an empty state for search results
+ */
 export const EmptySearch = () => {
   return (
     <div className="h-full flex flex-col items-center justify-center">

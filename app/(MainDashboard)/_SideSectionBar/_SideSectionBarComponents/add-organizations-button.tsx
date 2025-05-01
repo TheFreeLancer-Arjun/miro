@@ -5,6 +5,16 @@ import { CreateOrganization } from "@clerk/nextjs";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Hint } from "@/components/hint";
 
+/**
+ * `AddOrganizationButton` is a React component that renders a button used to open a modal
+ * for creating a new organization. It uses Clerk's `CreateOrganization` component inside a dialog.
+ *
+ * - The button displays a plus (`+`) icon.
+ * - On hover, a tooltip ("Create organization") appears.
+ * - When clicked, a modal opens with the organization creation form.
+ *
+ * @returns {JSX.Element} A styled button with a tooltip and modal integration for organization creation.
+ */
 export const AddOrganizationButton = () => {
   return (
     <Dialog>

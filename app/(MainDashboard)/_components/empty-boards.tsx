@@ -5,11 +5,18 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useOrganization } from "@clerk/nextjs";
 import { useApiMutationHook } from "@/hook/use-api-mutation-hook";
-import { toast } from "sonner"; // ✅ import added
+import { toast } from "sonner"; 
 import { useRouter } from "next/navigation";
 
+/**
+ * EmptyBoard component displays a message and a button to create the first board 
+ * when there are no boards available for the user to view.
+ * It allows users to create a new board by calling the API and redirecting to the created board's page.
+ *
+ * @returns {JSX.Element} The rendered component for creating a new board
+ */
 export const EmptyBoard = () => {
-  const router =useRouter()
+  const router = useRouter();
   const { organization } = useOrganization();
   const { mutate, pending } = useApiMutationHook(api.board.create);
 
@@ -22,7 +29,7 @@ export const EmptyBoard = () => {
     })
     .then((id) => {
       toast.success("Board created");
-      router.push(`board/${id}`)
+      router.push(`board/${id}`);
     })
     .catch(() => {
       toast.error("Failed to create board");

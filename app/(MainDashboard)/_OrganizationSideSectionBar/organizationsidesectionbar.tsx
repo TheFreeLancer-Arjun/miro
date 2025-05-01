@@ -14,12 +14,26 @@ const font = Poppins({
   weight: ["600"],
 });
 
+/**
+ * OrganizationSideSectionBar component represents the sidebar section of the dashboard.
+ * It includes the organization logo, organization switcher, and navigation buttons to 
+ * toggle between team boards and favorite boards.
+ * 
+ * - Displays the logo of the application and the name "Board".
+ * - Provides an organization switcher for changing organizations.
+ * - Includes two buttons that navigate to different sections of the application: 
+ *   - "Team boards" section.
+ *   - "Favorite boards" section, with the active state toggled based on query parameters.
+ * 
+ * @returns {JSX.Element} The sidebar with navigation elements and organization switcher.
+ */
 export const OrganizationSideSectionBar = () => {
   const searchParams = useSearchParams();
   const favorites = searchParams.get("favorites");
 
   return (
-    <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5 \">
+    <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5">
+      {/* Logo and application title */}
       <Link href="/">
         <div className="flex items-center gap-x-2">
           <Image src="/file.svg" alt="logo" height={60} width={60} />
@@ -29,6 +43,7 @@ export const OrganizationSideSectionBar = () => {
         </div>
       </Link>
 
+      {/* Organization Switcher */}
       <OrganizationSwitcher
         hidePersonal
         appearance={{
@@ -39,12 +54,11 @@ export const OrganizationSideSectionBar = () => {
               alignItems: "center",
               width: "100%",
             },
-
             organizationSwitcherTrigger: {
               padding: "6px",
               width: "100%",
               borderRadius: "8px",
-              border: "1px soild #E5E7EB",
+              border: "1px solid #E5E7EB",
               justifyContent: "space-between",
               backgroundColor: "white",
             },
@@ -52,7 +66,9 @@ export const OrganizationSideSectionBar = () => {
         }}
       />
 
+      {/* Navigation Buttons */}
       <div className="space-y-1 w-full">
+        {/* Button for "Team boards" section */}
         <Button
           variant={favorites ? "ghost" : "secondary"}
           asChild
@@ -60,10 +76,12 @@ export const OrganizationSideSectionBar = () => {
           className="font-normal justify-start px-2 w-full"
         >
           <Link href="/">
-            <LayoutDashboard className="h-4 w-4 mr-2 " />
+            <LayoutDashboard className="h-4 w-4 mr-2" />
             Team boards
           </Link>
         </Button>
+        
+        {/* Button for "Favorite boards" section */}
         <Button
           variant={favorites ? "secondary" : "ghost"}
           asChild
@@ -76,7 +94,7 @@ export const OrganizationSideSectionBar = () => {
               query: { favorites: true },
             }}
           >
-            <Star className="h-4 w-4 mr-2 " />
+            <Star className="h-4 w-4 mr-2" />
             Favorite boards
           </Link>
         </Button>

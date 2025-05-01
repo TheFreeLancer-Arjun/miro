@@ -2,6 +2,18 @@ import { v } from "convex/values";
 import { query } from "./_generated/server";
 import { getAllOrThrow } from "convex-helpers/server/relationships";
 
+/**
+ * Retrieves a list of boards for a given organization, with optional search and favorite filters.
+ * 
+ * @param {Object} args - The arguments for the query.
+ * @param {string} args.orgId - The organization ID to filter the boards by.
+ * @param {string} [args.search] - An optional search query to filter boards by title.
+ * @param {string} [args.favorites] - An optional filter to only return favorited boards.
+ * 
+ * @throws {Error} Throws an error if the user is not authenticated.
+ * 
+ * @returns {Array} A list of boards, each with a `isFavorite` property indicating whether the board is favorited by the current user.
+ */
 export const get = query({
   args: {
     orgId: v.string(),
@@ -53,6 +65,7 @@ export const get = query({
         .collect();
     }
 
+    // Adding the favorite relation to each board
     const boardWithFavoriteRelation = boards.map((board) => {
       return ctx.db
         .query("userFavorites")

@@ -1,8 +1,19 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 const images = ["/file.svg"];
 
+/**
+ * Creates a new board with a random image and saves it to the database.
+ * 
+ * @param {Object} args - The arguments for the mutation.
+ * @param {string} args.orgId - The organization ID associated with the board.
+ * @param {string} args.title - The title of the board.
+ * 
+ * @throws {Error} Throws an error if the user is not authenticated.
+ * 
+ * @returns {Object} The created board object.
+ */
 export const create = mutation({
   args: {
     orgId: v.string(),
@@ -29,8 +40,16 @@ export const create = mutation({
   },
 });
 
+/**
+ * Removes a board from the database and deletes any associated user favorites.
+ * 
+ * @param {Object} args - The arguments for the mutation.
+ * @param {Id} args.id - The ID of the board to be deleted.
+ * 
+ * @throws {Error} Throws an error if the user is not authenticated or the board is not found.
+ */
 export const remove = mutation({
-  args: { id: v.id("boards") },  // <-- Corrected here
+  args: { id: v.id("boards") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
@@ -54,8 +73,19 @@ export const remove = mutation({
   },
 });
 
+/**
+ * Updates the title of an existing board.
+ * 
+ * @param {Object} args - The arguments for the mutation.
+ * @param {Id} args.id - The ID of the board to be updated.
+ * @param {string} args.title - The new title of the board.
+ * 
+ * @throws {Error} Throws an error if the user is not authenticated, the title is empty, or the title exceeds 60 characters.
+ * 
+ * @returns {Object} The updated board object.
+ */
 export const update = mutation({
-  args: { id: v.id("boards"), title: v.string() },  // <-- Corrected here
+  args: { id: v.id("boards"), title: v.string() },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
@@ -70,7 +100,7 @@ export const update = mutation({
     }
 
     if (title.length > 60) {
-      throw new Error("Title cannot be longer than 60 characters"); // <-- Typo fix
+      throw new Error("Title cannot be longer than 60 characters");
     }
 
     const board = await ctx.db.patch(args.id, {
@@ -81,8 +111,19 @@ export const update = mutation({
   },
 });
 
+/**
+ * Adds a board to the user's favorites.
+ * 
+ * @param {Object} args - The arguments for the mutation.
+ * @param {Id} args.id - The ID of the board to be favorited.
+ * @param {string} args.orgId - The organization ID associated with the board.
+ * 
+ * @throws {Error} Throws an error if the user is not authenticated, the board is not found, or the board is already favorited.
+ * 
+ * @returns {Object} The favorited board object.
+ */
 export const favorites = mutation({
-  args: { id: v.id("boards"), orgId: v.string() }, // <-- Corrected here
+  args: { id: v.id("boards"), orgId: v.string() },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
@@ -119,8 +160,18 @@ export const favorites = mutation({
   },
 });
 
+/**
+ * Removes a board from the user's favorites.
+ * 
+ * @param {Object} args - The arguments for the mutation.
+ * @param {Id} args.id - The ID of the board to be unfavorited.
+ * 
+ * @throws {Error} Throws an error if the user is not authenticated, the board is not found, or the board is not favorited.
+ * 
+ * @returns {Object} The unfavorited board object.
+ */
 export const unfavorites = mutation({
-  args: { id: v.id("boards") }, // <-- Corrected here
+  args: { id: v.id("boards") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
@@ -144,10 +195,27 @@ export const unfavorites = mutation({
       .unique();
 
     if (!existingFavorite) {
-      throw new Error("Favorited board not found"); // <-- Typo fix
+      throw new Error("Favorited board not found");
     }
 
     await ctx.db.delete(existingFavorite._id);
+
+    return board;
+  },
+});
+
+/**
+ * Retrieves a board from the database by its ID.
+ * 
+ * @param {Object} args - The arguments for the query.
+ * @param {Id} args.id - The ID of the board to retrieve.
+ * 
+ * @returns {Object} The retrieved board object.
+ */
+export const get = query({
+  args: { id: v.id("boards") },
+  handler: async (ctx, args) => {
+    const board = ctx.db.get(args.id);
 
     return board;
   },
